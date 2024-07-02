@@ -9,7 +9,6 @@ package scene
 
 import (
 	"github.com/aiur-adept/sameriver/v4"
-	"github.com/aiur-adept/sameriver/v4/utils"
 
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/ttf"
@@ -28,5 +27,5 @@ type LoadingScene struct {
 	message_texture *sdl.Texture
 
 	// time accumulator for bouncing the word "loading"
-	accum_5000 utils.TimeAccumulator
+	accum_5000 sameriver.TimeAccumulator
 }

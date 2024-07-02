@@ -2,7 +2,6 @@ package scene
 
 import (
 	"github.com/aiur-adept/sameriver/v4"
-	"github.com/aiur-adept/sameriver/v4/utils"
 
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/ttf"
@@ -13,7 +12,7 @@ func (s *LoadingScene) Init(game *sameriver.Game, config map[string]string) {
 	s.game = game
 	if !s.initialized {
 		s.destroyed = false
-		s.accum_5000 = utils.NewTimeAccumulator(5000)
+		s.accum_5000 = sameriver.NewTimeAccumulator(5000)
 		s.message_font, err = ttf.OpenFont("./assets/fixedsys.ttf", 10)
 		if err != nil {
 			panic(err)

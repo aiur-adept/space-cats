@@ -16,17 +16,19 @@ func NewCoinDespawnAtEdgeSystem() *CoinDespawnAtEdgeSystem {
 
 func (s *CoinDespawnAtEdgeSystem) LinkWorld(w *sameriver.World) {
 	s.w = w
-	s.coins = s.w.EntitiesWithTag("coin")
+	s.coins = s.w.GetUpdatedEntityList(sameriver.NewEntityFilter("coin", func(e *sameriver.Entity) bool {
+		return e.GetTagList(sameriver.GENERICTAGS).Has("coin")
+	}))
 }
 
 func (s *CoinDespawnAtEdgeSystem) Update(dt_ms float64) {
-	for y := 0; y <= s.sh.GridY-1; y += (s.sh.GridY - 1) {
-		for x := 0; x < s.sh.GridX; x++ {
-			cell := s.sh.Table[x][y]
+	for y := 0; y <= s.sh.Hasher.GridY-1; y += (s.sh.Hasher.GridY - 1) {
+		for x := 0; x < s.sh.Hasher.GridX; x++ {
+			cell := s.sh.Hasher.Table[x][y]
 			for _, e := range cell {
-				if e.GetTagList("GenericTags").Has("coin") {
-					pos := e.GetVec2D("Position")
-					box := e.GetVec2D("Box")
+				if e.GetTagList(sameriver.GENERICTAGS).Has("coin") {
+					pos := e.GetVec2D(sameriver.POSITION)
+					box := e.GetVec2D(sameriver.BOX)
 					if pos.Y < box.Y || (s.w.Height-pos.Y) < box.Y {
 						s.w.Despawn(e)
 					}
@@ -34,20 +36,10 @@ func (s *CoinDespawnAtEdgeSystem) Update(dt_ms float64) {
 			}
 		}
 	}
-	for x := 0; x <= s.sh.GridX-1; x += (s.sh.GridX - 1) {
-		for y := 0; y < s.sh.GridY; y++ {
-			cell := s.sh.Table[x][y]
-			for _, e := range cell {
-				if e.GetTagList("GenericTags").Has("coin") {
-					pos := e.GetVec2D("Position")
-					box := e.GetVec2D("Box")
-					if pos.X < box.X || (s.w.Width-pos.X) < box.X {
-						s.w.Despawn(e)
-					}
-				}
-			}
-		}
-	}
+}
+
+func (s *CoinDespawnAtEdgeSystem) Expand(n int) {
+	s.sh.Hasher.Expand(n)
 }
 
 func (s *CoinDespawnAtEdgeSystem) GetComponentDeps() []string {
