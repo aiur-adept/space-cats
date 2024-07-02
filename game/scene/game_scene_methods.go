@@ -15,8 +15,8 @@ import (
 func (s *GameScene) buildWorld() {
 	// construct world object
 	s.w = sameriver.NewWorld(map[string]any{
-		"Width":  s.game.WindowSpec.Width,
-		"Height": s.game.WindowSpec.Height,
+		"width":  s.game.WindowSpec.Width,
+		"height": s.game.WindowSpec.Height,
 	})
 
 	// register components must always be called before AddSystems()
