@@ -46,7 +46,7 @@ func (s *GameScene) spawnInitialEntities() {
 	mass := 1.0
 	s.player = s.w.Spawn(map[string]any{
 		"components": map[sameriver.ComponentID]any{
-			sameriver.POSITION: sameriver.Vec2D{50, 50},
+			sameriver.POSITION: sameriver.Vec2D{100, 100},
 			sameriver.VELOCITY: sameriver.Vec2D{0, 0},
 			sameriver.BOX:      sameriver.Vec2D{2, 2},
 			sameriver.MASS:     mass,
@@ -67,10 +67,10 @@ func (s *GameScene) SimpleEntityDraw(
 func (s *GameScene) playerHandleKeyboardState(kb []uint8) {
 	v := s.player.GetVec2D(sameriver.VELOCITY)
 	// get player v1
-	v.X = 0.2 * float64(
+	v.X = 5 * float64(
 		int8(kb[sdl.SCANCODE_D]|kb[sdl.SCANCODE_RIGHT])-
 			int8(kb[sdl.SCANCODE_A]|kb[sdl.SCANCODE_LEFT]))
-	v.Y = 0.2 * float64(
+	v.Y = 5 * float64(
 		int8(kb[sdl.SCANCODE_W]|kb[sdl.SCANCODE_UP])-
 			int8(kb[sdl.SCANCODE_S]|kb[sdl.SCANCODE_DOWN]))
 }
@@ -105,7 +105,7 @@ func (s *GameScene) updateScoreTexture() {
 }
 
 func (s *GameScene) spawnRandomCoin(dt_ms float64) {
-	if s.coins.Length() < 1000 {
+	if s.coins.Length() < 100 {
 		mass := 1.0
 		c := s.w.Spawn(map[string]any{
 			"tags": []string{"coin"},
