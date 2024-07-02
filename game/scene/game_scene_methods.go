@@ -9,7 +9,7 @@ import (
 
 	"github.com/aiur-adept/sameriver/v4"
 
-	"github.com/dt-rush/space-cats/game/systems"
+	"github.com/aiur-adept/space-cats/game/systems"
 )
 
 func (s *GameScene) buildWorld() {

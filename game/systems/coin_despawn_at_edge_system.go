@@ -42,6 +42,9 @@ func (s *CoinDespawnAtEdgeSystem) Expand(n int) {
 	s.sh.Hasher.Expand(n)
 }
 
-func (s *CoinDespawnAtEdgeSystem) GetComponentDeps() []string {
-	return []string{"TagList,GenericTags", "Vec2D,Position", "Vec2D,Box"}
+func (s *CoinDespawnAtEdgeSystem) GetComponentDeps() []any {
+	return []any{
+		sameriver.POSITION, sameriver.VEC2D, "POSITION",
+		sameriver.BOX, sameriver.VEC2D, "BOX",
+	}
 }
