@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/dt-rush/sameriver/v2"
-	"github.com/dt-rush/space-cats/game/scene"
 	"math/rand"
 	"time"
+
+	"github.com/aiur-adept/sameriver/v4"
+	"github.com/aiur-adept/space-cats/game/scene"
 )
 
 func init() {

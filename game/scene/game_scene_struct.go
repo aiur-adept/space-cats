@@ -4,7 +4,7 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/ttf"
 
-	"github.com/dt-rush/sameriver/v2"
+	"github.com/aiur-adept/sameriver/v4"
 )
 
 type GameScene struct {

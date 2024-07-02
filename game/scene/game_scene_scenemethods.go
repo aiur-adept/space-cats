@@ -2,9 +2,10 @@ package scene
 
 import (
 	"fmt"
+
 	"github.com/veandco/go-sdl2/sdl"
 
-	"github.com/dt-rush/sameriver/v2"
+	"github.com/aiur-adept/sameriver/v4"
 )
 
 func (s *GameScene) Name() string {

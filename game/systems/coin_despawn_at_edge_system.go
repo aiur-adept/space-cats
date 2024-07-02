@@ -1,7 +1,7 @@
 package systems
 
 import (
-	"github.com/dt-rush/sameriver/v2"
+	"github.com/aiur-adept/sameriver/v4"
 )
 
 type CoinDespawnAtEdgeSystem struct {

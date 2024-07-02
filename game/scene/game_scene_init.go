@@ -3,7 +3,7 @@ package scene
 import (
 	"time"
 
-	"github.com/dt-rush/sameriver/v2"
+	"github.com/aiur-adept/sameriver/v4"
 	"github.com/veandco/go-sdl2/ttf"
 )
 
