@@ -3,7 +3,7 @@ module github.com/aiur-adept/space-cats
 go 1.19
 
 require (
-	github.com/aiur-adept/sameriver/v4 v4.0.1
+	github.com/aiur-adept/sameriver/v4 v4.0.10
 	github.com/veandco/go-sdl2 v0.4.40
 )
 

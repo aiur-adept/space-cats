@@ -22,6 +22,7 @@ func (s *CoinDespawnAtEdgeSystem) LinkWorld(w *sameriver.World) {
 }
 
 func (s *CoinDespawnAtEdgeSystem) Update(dt_ms float64) {
+	// despawn at up/down
 	for y := 0; y <= s.sh.Hasher.GridY-1; y += (s.sh.Hasher.GridY - 1) {
 		for x := 0; x < s.sh.Hasher.GridX; x++ {
 			cell := s.sh.Hasher.Table[x][y]
@@ -30,6 +31,22 @@ func (s *CoinDespawnAtEdgeSystem) Update(dt_ms float64) {
 					pos := e.GetVec2D(sameriver.POSITION)
 					box := e.GetVec2D(sameriver.BOX)
 					if pos.Y < box.Y || (s.w.Height-pos.Y) < box.Y {
+						s.w.Despawn(e)
+					}
+				}
+			}
+		}
+	}
+
+	// despawn at L/R
+	for x := 0; x <= s.sh.Hasher.GridX-1; x += (s.sh.Hasher.GridX - 1) {
+		for y := 0; y < s.sh.Hasher.GridY; y++ {
+			cell := s.sh.Hasher.Table[x][y]
+			for _, e := range cell {
+				if e.GetTagList(sameriver.GENERICTAGS).Has("coin") {
+					pos := e.GetVec2D(sameriver.POSITION)
+					box := e.GetVec2D(sameriver.BOX)
+					if pos.X < box.X || (s.w.Width-pos.X) < box.X {
 						s.w.Despawn(e)
 					}
 				}
