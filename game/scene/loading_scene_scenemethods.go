@@ -5,7 +5,7 @@ import (
 
 	"github.com/veandco/go-sdl2/sdl"
 
-	"github.com/aiur-adept/sameriver/v4"
+	"github.com/aiur-adept/sameriver/v7"
 )
 
 func (s *LoadingScene) Name() string {

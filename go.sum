@@ -1,7 +1,9 @@
 github.com/TwiN/go-color v1.4.0 h1:fNbOwOrvup5oj934UragnW0B1WKaAkkB85q19Y7h4ng=
 github.com/TwiN/go-color v1.4.0/go.mod h1:0QTVEPlu+AoCyTrho7bXbVkrCkVpdQr7YF7PYWEtSxM=
-github.com/aiur-adept/sameriver/v4 v4.0.10 h1:NC3ZsW5NmG6LQzdx/MaMIx8okR5gb/Dlgu5UcnXFqQg=
-github.com/aiur-adept/sameriver/v4 v4.0.10/go.mod h1:9KkD3pTXnxLd11aUNMMPyFtTWze2EOfrQQirvpbuZhA=
+github.com/aiur-adept/sameriver/v7 v7.1.2 h1:/pmY9BRt/sB5TYykbUwCEZcSY2NdBcDWRybERkKU+K8=
+github.com/aiur-adept/sameriver/v7 v7.1.2/go.mod h1:+ZCtKzRcsVUO5jn48LXx1OC8CjFgPKQrFTSXmAqOkn4=
+github.com/aquilax/go-perlin v1.1.0 h1:Gg+3jQ24wT4Y5GI7TCRLmYarzUG0k+n/JATFqOimb7s=
+github.com/aquilax/go-perlin v1.1.0/go.mod h1:z9Rl7EM4BZY0Ikp2fEN1I5mKSOJ26HQpk0O2TBdN2HE=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/golang-collections/go-datastructures v0.0.0-20150211160725-59788d5eb259 h1:ZHJ7+IGpuOXtVf6Zk/a3WuHQgkC+vXwaqfUBDFwahtI=
 github.com/golang-collections/go-datastructures v0.0.0-20150211160725-59788d5eb259/go.mod h1:9Qcha0gTWLw//0VNka1Cbnjvg3pNKGFdAm7E9sBabxE=

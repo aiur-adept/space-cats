@@ -1,7 +1,7 @@
 package systems
 
 import (
-	"github.com/aiur-adept/sameriver/v4"
+	"github.com/aiur-adept/sameriver/v7"
 )
 
 type CoinDespawnAtEdgeSystem struct {
@@ -17,7 +17,7 @@ func NewCoinDespawnAtEdgeSystem() *CoinDespawnAtEdgeSystem {
 func (s *CoinDespawnAtEdgeSystem) LinkWorld(w *sameriver.World) {
 	s.w = w
 	s.coins = s.w.GetUpdatedEntityList(sameriver.NewEntityFilter("coin", func(e *sameriver.Entity) bool {
-		return e.GetTagList(sameriver.GENERICTAGS).Has("coin")
+		return s.w.GetTagList(e, sameriver.GENERICTAGS_).Has("coin")
 	}))
 }
 
@@ -27,9 +27,9 @@ func (s *CoinDespawnAtEdgeSystem) Update(dt_ms float64) {
 		for x := 0; x < s.sh.Hasher.GridX; x++ {
 			cell := s.sh.Hasher.Table[x][y]
 			for _, e := range cell {
-				if e.GetTagList(sameriver.GENERICTAGS).Has("coin") {
-					pos := e.GetVec2D(sameriver.POSITION)
-					box := e.GetVec2D(sameriver.BOX)
+				if s.w.GetTagList(e, sameriver.GENERICTAGS_).Has("coin") {
+					pos := s.w.GetVec2D(e, sameriver.POSITION_)
+					box := s.w.GetVec2D(e, sameriver.BOX_)
 					if pos.Y < box.Y || (s.w.Height-pos.Y) < box.Y {
 						s.w.Despawn(e)
 					}
@@ -43,9 +43,9 @@ func (s *CoinDespawnAtEdgeSystem) Update(dt_ms float64) {
 		for y := 0; y < s.sh.Hasher.GridY; y++ {
 			cell := s.sh.Hasher.Table[x][y]
 			for _, e := range cell {
-				if e.GetTagList(sameriver.GENERICTAGS).Has("coin") {
-					pos := e.GetVec2D(sameriver.POSITION)
-					box := e.GetVec2D(sameriver.BOX)
+				if s.w.GetTagList(e, sameriver.GENERICTAGS_).Has("coin") {
+					pos := s.w.GetVec2D(e, sameriver.POSITION_)
+					box := s.w.GetVec2D(e, sameriver.BOX_)
 					if pos.X < box.X || (s.w.Width-pos.X) < box.X {
 						s.w.Despawn(e)
 					}
@@ -61,7 +61,7 @@ func (s *CoinDespawnAtEdgeSystem) Expand(n int) {
 
 func (s *CoinDespawnAtEdgeSystem) GetComponentDeps() []any {
 	return []any{
-		sameriver.POSITION, sameriver.VEC2D, "POSITION",
-		sameriver.BOX, sameriver.VEC2D, "BOX",
+		sameriver.POSITION_, sameriver.VEC2D, "POSITION",
+		sameriver.BOX_, sameriver.VEC2D, "BOX",
 	}
 }

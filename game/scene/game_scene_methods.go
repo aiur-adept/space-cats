@@ -7,7 +7,7 @@ import (
 
 	"github.com/veandco/go-sdl2/sdl"
 
-	"github.com/aiur-adept/sameriver/v4"
+	"github.com/aiur-adept/sameriver/v7"
 
 	"github.com/aiur-adept/space-cats/game/systems"
 )
@@ -32,25 +32,26 @@ func (s *GameScene) buildWorld() {
 	)
 	s.w.SetSystemSchedule("CollisionSystem", 16)
 	// get updated entity list of coins
-	s.coins = s.w.GetUpdatedEntityList(sameriver.NewEntityFilter("coin", func(e *sameriver.Entity) bool {
-		return e.GetTagList(sameriver.GENERICTAGS).Has("coin")
-	}))
+	s.coins = s.w.GetUpdatedEntityListByTag("coin")
 	// add spawn random coin logic
 	const COINS_PER_SEC = 50
-	s.w.AddWorldLogicWithSchedule("spawn-random-coin", s.spawnRandomCoin, 1000/COINS_PER_SEC)
+	s.w.AddLogicWithSchedule("spawn-random-coin", s.spawnRandomCoin, 1000/COINS_PER_SEC)
 	// add player coin collision logic
-	s.w.AddWorldLogic("player-collect-coin", s.playerCollectCoin)
+	s.w.AddLogic("player-collect-coin", s.playerCollectCoin)
+	// add coin move logic
+	s.w.AddLogic("move-coins", s.moveCoins)
 }
 
 func (s *GameScene) spawnInitialEntities() {
 	mass := 1.0
 	s.player = s.w.Spawn(map[string]any{
 		"components": map[sameriver.ComponentID]any{
-			sameriver.POSITION:     sameriver.Vec2D{100, 100},
-			sameriver.VELOCITY:     sameriver.Vec2D{0, 0},
-			sameriver.ACCELERATION: sameriver.Vec2D{0, 0},
-			sameriver.BOX:          sameriver.Vec2D{10, 10},
-			sameriver.MASS:         mass,
+			sameriver.POSITION_:     sameriver.Vec2D{100, 100},
+			sameriver.VELOCITY_:     sameriver.Vec2D{0, 0},
+			sameriver.ACCELERATION_: sameriver.Vec2D{0, 0},
+			sameriver.BOX_:          sameriver.Vec2D{10, 10},
+			sameriver.MASS_:         mass,
+			sameriver.RIGIDBODY_:    true,
 		},
 		"tags": []string{"player"},
 	})
@@ -59,14 +60,14 @@ func (s *GameScene) spawnInitialEntities() {
 func (s *GameScene) SimpleEntityDraw(
 	r *sdl.Renderer, e *sameriver.Entity, c sdl.Color) {
 
-	box := e.GetVec2D(sameriver.BOX)
-	pos := e.GetVec2D(sameriver.POSITION).ShiftedCenterToBottomLeft(*box)
+	box := s.w.GetVec2D(e, sameriver.BOX_)
+	pos := s.w.GetVec2D(e, sameriver.POSITION_).ShiftedCenterToBottomLeft(*box)
 	r.SetDrawColor(c.R, c.G, c.B, c.A)
 	s.game.Screen.FillRect(r, &pos, box)
 }
 
 func (s *GameScene) playerHandleKeyboardState(kb []uint8) {
-	v := s.player.GetVec2D(sameriver.VELOCITY)
+	v := s.w.GetVec2D(s.player, sameriver.VELOCITY_)
 	// get player v1
 	v.X = 0.4 * float64(
 		int8(kb[sdl.SCANCODE_D]|kb[sdl.SCANCODE_RIGHT])-
@@ -108,27 +109,27 @@ func (s *GameScene) updateScoreTexture() {
 func (s *GameScene) spawnRandomCoin(dt_ms float64) {
 	if s.coins.Length() < 500 {
 		mass := 1.0
-		c := s.w.Spawn(map[string]any{
+		s.w.Spawn(map[string]any{
 			"tags": []string{"coin"},
 			"components": map[sameriver.ComponentID]any{
-				sameriver.POSITION: sameriver.Vec2D{
+				sameriver.POSITION_: sameriver.Vec2D{
 					rand.Float64()*float64(s.w.Width/3) + float64(s.w.Width/3),
 					rand.Float64()*float64(s.w.Height/3) + float64(s.w.Height/3),
 				},
-				sameriver.VELOCITY:     sameriver.Vec2D{0, 0},
-				sameriver.ACCELERATION: sameriver.Vec2D{0, 0},
-				sameriver.BOX:          sameriver.Vec2D{4, 4},
-				sameriver.MASS:         mass,
+				sameriver.VELOCITY_:     sameriver.Vec2D{0, 0},
+				sameriver.ACCELERATION_: sameriver.Vec2D{0, 0},
+				sameriver.BOX_:          sameriver.Vec2D{4, 4},
+				sameriver.MASS_:         mass,
+				sameriver.RIGIDBODY_:    false,
 			},
 		})
-		c.AddLogic("coin-logic", s.coinLogic(c))
 	}
 }
 
-func (s *GameScene) coinLogic(c *sameriver.Entity) func(e *sameriver.Entity, dt_ms float64) {
-	return func(e *sameriver.Entity, dt_ms float64) {
-		dist := c.GetVec2D(sameriver.POSITION).Sub(*s.player.GetVec2D(sameriver.POSITION))
-		*c.GetVec2D(sameriver.VELOCITY) = dist.Unit().Scale(0.1 * (1.0 - dist.Magnitude()/float64(s.w.Width)))
+func (s *GameScene) moveCoins(dt_ms float64) {
+	for _, c := range s.coins.GetEntities() {
+		dist := s.w.GetVec2D(c, sameriver.POSITION_).Sub(*s.w.GetVec2D(s.player, sameriver.POSITION_))
+		*s.w.GetVec2D(c, sameriver.VELOCITY_) = dist.Unit().Scale(0.1 * (1.0 - dist.Magnitude()/float64(s.w.Width)))
 	}
 }
 
@@ -152,7 +153,7 @@ func (s *GameScene) subscribeToPlayerCoinCollision() {
 			func(e sameriver.Event) bool {
 				c := e.Data.(sameriver.CollisionData)
 				return c.This == s.player &&
-					c.Other.GetTagList(sameriver.GENERICTAGS).Has("coin")
+					s.w.GetTagList(c.Other, sameriver.GENERICTAGS_).Has("coin")
 			}))
 }
 
@@ -162,7 +163,7 @@ func (s *GameScene) augmentScore(x int) {
 }
 
 func (s *GameScene) growPlayer(increase float64) {
-	playerBox := s.player.GetVec2D(sameriver.BOX)
+	playerBox := s.w.GetVec2D(s.player, sameriver.BOX_)
 	if playerBox.X < 80 && playerBox.Y < 80 {
 		playerBox.X += increase
 		playerBox.Y += increase

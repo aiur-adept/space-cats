@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/aiur-adept/sameriver/v4"
+	"github.com/aiur-adept/sameriver/v7"
 	"github.com/aiur-adept/space-cats/game/scene"
 )
 
